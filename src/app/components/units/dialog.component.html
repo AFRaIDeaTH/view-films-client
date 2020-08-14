@@ -1,0 +1,101 @@
+<div *ngIf="!fileFound">
+  <h2 mat-dialog-title>Ошибка в доступности файла</h2>
+  <mat-dialog-content class="mat-typography">
+    <mat-label>Извините, видео для данного фильма или сериала недоступно</mat-label>
+  </mat-dialog-content>
+</div>
+
+<div *ngIf="!isShowPlayer && fileFound">
+  <h2 mat-dialog-title>Ваши предпочтения</h2>
+  <mat-dialog-content class="mat-typography">
+    <form [formGroup]="form" mat-dialog-content>
+      <mat-form-field appearance="fill">
+        <mat-label>Озвучка</mat-label>
+        <mat-select [formControlName]="'translateControl'" name="translate">
+          <mat-option
+            *ngFor="let translate of translates; let idx = index"
+            [value]="idx"
+          >
+            {{ translate.translation }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <br />
+      <mat-form-field appearance="fill">
+        <mat-label>Качество</mat-label>
+        <mat-select
+          *ngIf="isMovie"
+          [formControlName]="'qualityControl'"
+          name="quality"
+        >
+          <mat-option
+            *ngFor="
+              let quality of translates[form.value.translateControl].media.quality
+            "
+            [value]="quality"
+          >
+            {{ quality }}
+          </mat-option>
+        </mat-select>
+        <mat-select
+          *ngIf="!isMovie"
+          [formControlName]="'qualityControl'"
+          name="quality"
+        >
+          <mat-option
+            *ngFor="
+              let quality of translates[form.value.translateControl].quality
+            "
+            [value]="quality"
+          >
+            {{ quality }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+        <br />
+        <mat-form-field *ngIf=!isMovie appearance="fill">
+            <mat-label>Выбор сезона</mat-label>
+            <mat-select [formControlName]="'seasonControl'" name="translate">
+                <mat-option *ngFor="let season of translates[form.value.translateControl].url; let idx = index" [value]="idx">
+                    {{ season.comment }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <br />
+        <mat-form-field *ngIf=!isMovie appearance="fill">
+            <mat-label>Выбор серии</mat-label>
+            <mat-select [formControlName]="'episodeControl'" name="translate">
+                <mat-option *ngFor="let episode of translates[form.value.translateControl].url[form.value.seasonControl].folder; let idx = index" [value]="idx">
+                    {{ episode.comment }} {{ episode.orig_title }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="isShowPlayer = true">Смотреть онлайн</button>
+    <button mat-button>Скачать</button>
+  </mat-dialog-actions>
+</div>
+
+<mat-dialog-content *ngIf="isShowPlayer">
+  <video width="100%" height="100%" controls="controls">
+    <source *ngIf=isMovie
+      [src]="
+        'http:' +
+        translates[form.value.translateControl].media.file +
+        '/' +
+        form.value.qualityControl +
+        '.mp4'
+      "
+      type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'
+    />
+    <source *ngIf=!isMovie [src]="
+            'http:' +
+            translates[form.value.translateControl].url[form.value.seasonControl].folder[form.value.episodeControl].file +
+            '/' +
+            form.value.qualityControl +
+            '.mp4'
+          " type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+  </video>
+</mat-dialog-content>

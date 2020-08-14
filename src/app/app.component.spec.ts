@@ -20,16 +20,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'view-films-client'`, () => {
+  it(`should have as title 'allfilms-client'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('view-films-client');
+    expect(app.title).toEqual('allfilms-client');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('view-films-client app is running!');
+    expect(compiled.querySelector('.content span').textContent).toContain('allfilms-client app is running!');
   });
 });

@@ -1,0 +1,53 @@
+<div class="container" matAutocompleteOrigin #origin="matAutocompleteOrigin">
+  <form (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Название фильма</mat-label>
+      <input
+        matInput
+        type="text"
+        placeholder="Казино"
+        [(ngModel)]="searchName"
+        name="filmName"
+        [matAutocomplete]="auto"
+        (keyup)="getSearchTips($event)"
+      />
+      <input type="submit" class="hidden" tabindex="-1" />
+      <button
+        class="close-icon"
+        mat-button
+        *ngIf="searchName"
+        matSuffix
+        mat-icon-button
+        aria-label="Clear"
+        (click)="searchName = ''"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option
+          class="custom-option"
+          *ngFor="let film of filmsList"
+          (click)="openDialog(film.id)"
+        >
+          <div class="item-autocomplete">
+            <img class="logo" *ngIf="film.image" [src]="film.image" />
+            <img
+              class="logo"
+              *ngIf="!film.image"
+              src="../../../assets/images/nologo.svg"
+            />
+            <div class="info">
+              <span class="title">{{ film.rus }}</span>
+              <span class="subtitle" *ngIf="film.is_serial === ''"
+                >{{ film.name }} {{ film.year }} Фильм</span
+              >
+              <span class="subtitle" *ngIf="film.is_serial !== ''"
+                >{{ film.name }} {{ film.year }} Сериал</span
+              >
+            </div>
+          </div>
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </form>
+</div>
