@@ -1,6 +1,8 @@
-# AllfilmsClient
+# Viewfilmsclient
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.0.4.
+This project is a client for an application made for browsing films or serials based by id on kinopoisk.ru.
+This client designed to make requests for a little service providing films' id based by search name and after selecting a desired one to provide links to mp4 of this film.
+Think of it as an example, because api service working with this client is not present here.
 
 ## Development server
 
